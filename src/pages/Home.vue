@@ -5,11 +5,11 @@ import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import { CalendarOptions } from "@fullcalendar/core";
 
-import Calendar from "../components/Calendar.vue";
+import TheCalendar from "../components/TheCalendar.vue";
 import EventForm from "../components/EventForm.vue";
 
 export default defineComponent({
-  components: { Calendar, EventForm },
+  components: { TheCalendar, EventForm },
   setup() {
     const events = reactive([
       { title: "event 1", start: "2024-09-01" },
@@ -49,11 +49,11 @@ export default defineComponent({
   <div class="container">
     <div class="row">
       <div class="col-lg-8">
-        <Calendar :calendarOptions="calendarOptions" />
+        <TheCalendar :calendarOptions="calendarOptions" />
       </div>
       <!-- Placeholder -->
       <div class="col-lg-4">
-        <EventForm />
+        <EventForm @todo="todo" />
       </div>
     </div>
   </div>
