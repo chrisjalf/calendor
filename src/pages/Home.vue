@@ -1,13 +1,15 @@
 <script lang="ts">
 import { defineComponent, Reactive, reactive } from "vue";
-import FullCalendar from "@fullcalendar/vue3";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import { CalendarOptions } from "@fullcalendar/core";
 
+import Calendar from "../components/Calendar.vue";
+import EventForm from "../components/EventForm.vue";
+
 export default defineComponent({
-  components: { FullCalendar },
+  components: { Calendar, EventForm },
   setup() {
     const events = reactive([
       { title: "event 1", start: "2024-09-01" },
@@ -47,35 +49,12 @@ export default defineComponent({
   <div class="container">
     <div class="row">
       <div class="col-lg-8">
-        <FullCalendar :options="calendarOptions" />
+        <Calendar :calendarOptions="calendarOptions" />
       </div>
       <!-- Placeholder -->
       <div class="col-lg-4">
-        <div class="mb-3">
-          <label class="form-label">Name</label>
-          <input type="email" class="form-control" />
-        </div>
-        <div class="mb-3">
-          <label class="form-label">Description</label>
-          <textarea class="form-control"></textarea>
-        </div>
-        <button type="submit" class="btn btn-primary" @click="todo">
-          Submit
-        </button>
+        <EventForm />
       </div>
     </div>
   </div>
 </template>
-
-<style scoped>
-.fc {
-  /* the calendar root */
-  padding: 3rem;
-  margin: 0 auto;
-}
-
-:deep(a) {
-  color: unset;
-  text-decoration: unset;
-}
-</style>
