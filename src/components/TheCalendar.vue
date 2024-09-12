@@ -29,4 +29,8 @@ export default defineComponent({
   color: unset;
   text-decoration: unset;
 }
+
+:deep(.fc-event) {
+  cursor: pointer;
+}
 </style>

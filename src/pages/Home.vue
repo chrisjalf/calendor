@@ -1,5 +1,5 @@
 <script lang="ts">
-import { defineComponent, Reactive, reactive } from "vue";
+import { defineComponent, Reactive, reactive, ref } from "vue";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
@@ -7,9 +7,10 @@ import { CalendarOptions } from "@fullcalendar/core";
 
 import TheCalendar from "../components/TheCalendar.vue";
 import EventForm from "../components/EventForm.vue";
+import EventModal from "../components/EventModal.vue";
 
 export default defineComponent({
-  components: { TheCalendar, EventForm },
+  components: { TheCalendar, EventForm, EventModal },
   setup() {
     const events = reactive([
       { title: "event 1", start: "2024-09-01" },
@@ -31,7 +32,9 @@ export default defineComponent({
       initialView: "dayGridMonth",
       events: events,
       dayMaxEvents: true,
+      eventClick: handleEventClick,
     });
+    let eventModal = ref(null);
 
     function todo() {
       events.push({
@@ -40,7 +43,12 @@ export default defineComponent({
       });
     }
 
-    return { calendarOptions, todo };
+    function handleEventClick() {
+      console.log("Clicked");
+      eventModal.value.showModal();
+    }
+
+    return { calendarOptions, todo, eventModal };
   },
 });
 </script>
@@ -56,5 +64,6 @@ export default defineComponent({
         <EventForm @todo="todo" />
       </div>
     </div>
+    <EventModal ref="eventModal" />
   </div>
 </template>
