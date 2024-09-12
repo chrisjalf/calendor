@@ -1,30 +1,25 @@
 <script lang="ts">
 import { defineComponent, onMounted, ref } from "vue";
 import { Modal } from "bootstrap";
-import { EventImpl } from "@fullcalendar/core/internal";
-
-import TheActionableModal from "./TheActionableModal.vue";
 
 export default defineComponent({
-  components: { TheActionableModal },
-  setup(_, { expose }) {
+  props: {
+    title: { type: String, required: true },
+    body: { type: String, required: true },
+    closeText: { type: String, required: true },
+    confirmText: { type: String, required: true },
+  },
+  emits: { confirm: () => true },
+  setup(_, { emit, expose }) {
     const eventModal = ref<Element>();
     let eventModalObj: Modal;
-    let selectedEvent = ref<EventImpl>();
 
-    const confirmationModal = ref<InstanceType<typeof TheActionableModal>>();
-
-    function showModal(event: EventImpl) {
-      selectedEvent.value = event;
+    function showModal() {
       eventModalObj.show();
     }
 
-    function promptDeleteEvent() {
-      confirmationModal.value?.showModal();
-    }
-
-    function deleteEvent() {
-      selectedEvent.value?.remove();
+    function handleConfirm() {
+      emit("confirm");
     }
 
     expose({ showModal });
@@ -33,14 +28,7 @@ export default defineComponent({
       if (eventModal.value) eventModalObj = new Modal(eventModal.value);
     });
 
-    return {
-      selectedEvent,
-      showModal,
-      eventModal,
-      confirmationModal,
-      promptDeleteEvent,
-      deleteEvent,
-    };
+    return { showModal, eventModal, handleConfirm };
   },
 });
 </script>
@@ -58,7 +46,7 @@ export default defineComponent({
         <div className="modal-content">
           <div className="modal-header">
             <h1 className="modal-title fs-5" id="exampleModalLabel">
-              View Event
+              {{ title }}
             </h1>
             <button
               type="button"
@@ -67,40 +55,26 @@ export default defineComponent({
               aria-label="Close"
             ></button>
           </div>
-          <div className="modal-body">
-            Body
-            <div v-if="selectedEvent?.title">{{ selectedEvent.title }}</div>
-            <div v-if="selectedEvent?.extendedProps.description">
-              {{ selectedEvent?.extendedProps.description }}
-            </div>
-          </div>
+          <div className="modal-body">{{ body }}</div>
           <div className="modal-footer">
-            <button
-              type="button"
-              className="btn btn-danger"
-              data-bs-dismiss="modal"
-              @click="promptDeleteEvent"
-            >
-              Delete
-            </button>
             <button
               type="button"
               className="btn btn-secondary"
               data-bs-dismiss="modal"
             >
-              Close
+              {{ closeText }}
+            </button>
+            <button
+              type="button"
+              className="btn btn-primary"
+              data-bs-dismiss="modal"
+              @click="handleConfirm"
+            >
+              {{ confirmText }}
             </button>
           </div>
         </div>
       </div>
     </div>
   </teleport>
-  <TheActionableModal
-    ref="confirmationModal"
-    :title="'Deleting Event'"
-    :body="'This action cannot be undone. Proceed?'"
-    :closeText="'Close'"
-    :confirmText="'Confirm'"
-    @confirm="deleteEvent"
-  />
 </template>
