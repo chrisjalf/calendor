@@ -3,7 +3,7 @@ import { defineComponent, Reactive, reactive, ref } from "vue";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
-import { CalendarOptions } from "@fullcalendar/core";
+import { CalendarOptions, EventClickArg } from "@fullcalendar/core";
 
 import TheCalendar from "../components/TheCalendar.vue";
 import EventForm from "../components/EventForm.vue";
@@ -13,7 +13,11 @@ export default defineComponent({
   components: { TheCalendar, EventForm, EventModal },
   setup() {
     const events = reactive([
-      { title: "event 1", start: "2024-09-01" },
+      {
+        title: "event 1",
+        start: "2024-09-01",
+        extendedProps: { description: "Hello" },
+      },
       { title: "event 2", start: "2024-09-02" },
     ]);
     const calendarOptions: Reactive<CalendarOptions> = reactive({
@@ -43,8 +47,8 @@ export default defineComponent({
       });
     }
 
-    function handleEventClick() {
-      eventModal.value?.showModal();
+    function handleEventClick(clickInfo: EventClickArg) {
+      eventModal.value?.showModal(clickInfo.event);
     }
 
     return {

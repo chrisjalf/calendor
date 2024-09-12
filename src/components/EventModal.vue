@@ -1,13 +1,16 @@
 <script lang="ts">
 import { defineComponent, onMounted, ref } from "vue";
 import { Modal } from "bootstrap";
+import { EventImpl } from "@fullcalendar/core/internal";
 
 export default defineComponent({
   setup(_, { expose }) {
     const eventModal = ref<Element>();
     let eventModalObj: Modal;
+    let selectedEvent = ref<EventImpl>();
 
-    function showModal() {
+    function showModal(event: EventImpl) {
+      selectedEvent.value = event;
       eventModalObj.show();
     }
 
@@ -17,7 +20,7 @@ export default defineComponent({
       if (eventModal.value) eventModalObj = new Modal(eventModal.value);
     });
 
-    return { showModal, eventModal };
+    return { selectedEvent, showModal, eventModal };
   },
 });
 </script>
@@ -36,6 +39,9 @@ export default defineComponent({
         <div className="modal-content">
           <div className="modal-header">
             <h1 className="modal-title fs-5" id="exampleModalLabel">Title</h1>
+            <h3>
+              {{ JSON.stringify(selectedEvent) }}
+            </h3>
             <button
               type="button"
               className="btn-close"
@@ -43,7 +49,13 @@ export default defineComponent({
               aria-label="Close"
             ></button>
           </div>
-          <div className="modal-body">Body</div>
+          <div className="modal-body">
+            Body
+            <div v-if="selectedEvent?.title">{{ selectedEvent.title }}</div>
+            <div v-if="selectedEvent?.extendedProps.description">
+              {{ selectedEvent?.extendedProps.description }}
+            </div>
+          </div>
           <div className="modal-footer">
             <button
               type="button"
