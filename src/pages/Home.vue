@@ -34,7 +34,7 @@ export default defineComponent({
       dayMaxEvents: true,
       eventClick: handleEventClick,
     });
-    let eventModal = ref(null);
+    const eventModal = ref<InstanceType<typeof EventModal> | null>(null);
 
     function todo() {
       events.push({
@@ -44,11 +44,14 @@ export default defineComponent({
     }
 
     function handleEventClick() {
-      console.log("Clicked");
-      eventModal.value.showModal();
+      eventModal.value?.showModal();
     }
 
-    return { calendarOptions, todo, eventModal };
+    return {
+      calendarOptions,
+      eventModal,
+      todo,
+    };
   },
 });
 </script>

@@ -4,20 +4,20 @@ import { Modal } from "bootstrap";
 
 export default defineComponent({
   setup(_, { expose }) {
-    let modalEle = ref();
-    let thisModalObj = null;
+    const eventModal = ref();
+    let eventModalObj: Modal;
 
     function showModal() {
-      thisModalObj.show();
+      eventModalObj.show();
     }
 
     expose({ showModal });
 
     onMounted(() => {
-      thisModalObj = new Modal(modalEle.value);
+      eventModalObj = new Modal(eventModal.value);
     });
 
-    return { modalEle };
+    return { showModal, eventModal };
   },
 });
 </script>
@@ -30,7 +30,7 @@ export default defineComponent({
       tabIndex="{-1}"
       aria-labelledby="exampleModalLabel"
       aria-hidden="true"
-      ref="modalEle"
+      ref="eventModal"
     >
       <div className="modal-dialog modal-dialog-centered">
         <div className="modal-content">
