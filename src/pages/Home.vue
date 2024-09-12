@@ -34,7 +34,7 @@ export default defineComponent({
       dayMaxEvents: true,
       eventClick: handleEventClick,
     });
-    const eventModal = ref<InstanceType<typeof EventModal> | null>(null);
+    const eventModal = ref<InstanceType<typeof EventModal>>();
 
     function todo() {
       events.push({

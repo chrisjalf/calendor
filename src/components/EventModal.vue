@@ -4,7 +4,7 @@ import { Modal } from "bootstrap";
 
 export default defineComponent({
   setup(_, { expose }) {
-    const eventModal = ref();
+    const eventModal = ref<Element>();
     let eventModalObj: Modal;
 
     function showModal() {
@@ -14,7 +14,7 @@ export default defineComponent({
     expose({ showModal });
 
     onMounted(() => {
-      eventModalObj = new Modal(eventModal.value);
+      if (eventModal.value) eventModalObj = new Modal(eventModal.value);
     });
 
     return { showModal, eventModal };
