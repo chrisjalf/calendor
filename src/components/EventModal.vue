@@ -104,3 +104,9 @@ export default defineComponent({
     @confirm="deleteEvent"
   />
 </template>
+
+<style scoped>
+.modal {
+  z-index: 99999;
+}
+</style>
