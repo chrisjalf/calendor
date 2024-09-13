@@ -62,7 +62,10 @@ export default defineComponent({
         calendarOptions.events = newVal.map((event) => ({
           title: event.title,
           start: event.start,
-          extendedProps: { id: event.id },
+          extendedProps: {
+            id: event.id,
+            description: event.description,
+          },
         }));
       }
     );
@@ -71,7 +74,10 @@ export default defineComponent({
       calendarOptions.events = store.state.events.map((event) => ({
         title: event.title,
         start: event.start,
-        extendedProps: { id: event.id },
+        extendedProps: {
+          id: event.id,
+          description: event.description,
+        },
       }));
     });
 

@@ -68,10 +68,18 @@ export default defineComponent({
             ></button>
           </div>
           <div className="modal-body">
-            Body
-            <div v-if="selectedEvent?.title">{{ selectedEvent.title }}</div>
-            <div v-if="selectedEvent?.extendedProps.description">
-              {{ selectedEvent?.extendedProps.description }}
+            <div class="bd-example">
+              <dl>
+                <dt v-if="selectedEvent?.title">Name</dt>
+                <dd v-if="selectedEvent?.title">{{ selectedEvent.title }}</dd>
+
+                <dt v-if="selectedEvent?.extendedProps.description">
+                  Description
+                </dt>
+                <dd v-if="selectedEvent?.extendedProps.description">
+                  {{ selectedEvent?.extendedProps.description }}
+                </dd>
+              </dl>
             </div>
           </div>
           <div className="modal-footer">
