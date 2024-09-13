@@ -7,12 +7,19 @@ import { dateFormatter } from "../utils/index";
 
 export default defineComponent({
   components: { VueDatePicker },
-  emits: { afterSelect: (_: Date[]) => true },
-  setup(_, { emit }) {
+  emits: {
+    validateDates: () => true,
+    afterSelect: (_: Date[]) => true,
+  },
+  setup(_, { emit, expose }) {
     const selectedDates = ref<Date[]>([]);
 
+    function handleValidateDates() {
+      emit("validateDates");
+    }
+
     function handleAfterSelect() {
-      emit("afterSelect", selectedDates.value);
+      emit("afterSelect", selectedDates.value ?? []);
     }
 
     function formatDate(dates: Date[]) {
@@ -31,7 +38,19 @@ export default defineComponent({
       return displayDate;
     }
 
-    return { selectedDates, formatDate, handleAfterSelect };
+    function resetDates() {
+      selectedDates.value = [];
+    }
+
+    expose({ resetDates });
+
+    return {
+      selectedDates,
+      formatDate,
+      handleValidateDates,
+      handleAfterSelect,
+      resetDates,
+    };
   },
 });
 </script>
@@ -41,6 +60,7 @@ export default defineComponent({
     range
     v-model="selectedDates"
     :format="formatDate"
+    @open="handleValidateDates"
     @update:model-value="handleAfterSelect"
   />
 </template>

@@ -9,19 +9,31 @@ import TheDateRangePicker from "./TheDateRangePicker.vue";
 interface EventFormError {
   name?: string;
   description?: string;
-  startDate?: string;
+  dates?: string;
 }
 
-export const initialEventFormError: EventFormError = {};
+const initialEventFormError: EventFormError = {
+  name: undefined,
+  description: undefined,
+  dates: undefined,
+};
 
 export default defineComponent({
   components: { TheDateRangePicker },
   emits: { addEvent: (_: EventRequest) => true },
   setup(_, { emit }) {
     const eventName = ref("");
-    const eventDescription = ref("JS One Sdn Bhd");
+    const eventDescription = ref("");
     const eventDates = ref<string[]>([]);
     const eventFormError = ref<EventFormError>(initialEventFormError);
+    const theDateRangePicker = ref<InstanceType<typeof TheDateRangePicker>>();
+
+    function resetForm() {
+      theDateRangePicker.value?.resetDates();
+      eventName.value = "";
+      eventDescription.value = "";
+      eventDates.value = [];
+    }
 
     function validateInput(fieldName: string) {
       let errorMessage: string | undefined;
@@ -35,6 +47,12 @@ export default defineComponent({
         case "description":
           if (eventDescription.value.trim() === "")
             errorMessage = "Description is required";
+          else errorMessage = undefined;
+
+          break;
+        case "dates":
+          if (eventDates.value.length === 0)
+            errorMessage = "Starting date is required";
           else errorMessage = undefined;
 
           break;
@@ -57,24 +75,48 @@ export default defineComponent({
       }
 
       eventDates.value = processedDates;
+
+      validateInput("dates");
+    }
+
+    function checkEventForm() {
+      if (eventName.value.trim() === "")
+        eventFormError.value["name"] = "Name is required";
+      else eventFormError.value["name"] = undefined;
+
+      if (eventDescription.value.trim() === "")
+        eventFormError.value["description"] = "Description is required";
+      else eventFormError.value["description"] = undefined;
+
+      if (eventDates.value.length === 0)
+        eventFormError.value["dates"] = "Starting date is required";
+      else eventFormError.value["dates"] = undefined;
     }
 
     function handleAddEvent() {
-      const dates = eventDates.value;
+      checkEventForm();
 
-      if (dates.length === 0) return;
+      if (
+        Object.values(eventFormError.value).every((val) => val === undefined)
+      ) {
+        const dates = eventDates.value;
 
-      let event: EventRequest = {
-        title: eventName.value,
-        description: eventDescription.value,
-        start: dates[0],
-      };
+        if (dates.length === 0) return;
 
-      if (dates.length > 1) {
-        event.end = dates[1];
+        let event: EventRequest = {
+          title: eventName.value,
+          description: eventDescription.value,
+          start: dates[0],
+        };
+
+        if (dates.length > 1) {
+          event.end = dates[1];
+        }
+
+        emit("addEvent", event);
+
+        resetForm();
       }
-
-      emit("addEvent", event);
     }
 
     return {
@@ -82,6 +124,7 @@ export default defineComponent({
       eventDescription,
       eventDates,
       eventFormError,
+      theDateRangePicker,
       validateInput,
       changeEventDates,
       handleAddEvent,
@@ -120,7 +163,15 @@ export default defineComponent({
   </div>
   <div class="mb-3">
     <label class="form-label">Date</label>
-    <TheDateRangePicker @afterSelect="changeEventDates" />
+    <TheDateRangePicker
+      ref="theDateRangePicker"
+      :class="{ 'is-invalid': eventFormError.dates }"
+      @validateDates="() => validateInput('dates')"
+      @afterSelect="changeEventDates"
+    />
+    <div className="invalid-feedback" v-if="eventFormError.dates">
+      {{ eventFormError.dates }}
+    </div>
   </div>
   <button type="submit" class="btn btn-primary" @click="handleAddEvent">
     Submit
