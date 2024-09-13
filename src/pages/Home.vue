@@ -31,9 +31,18 @@ export default defineComponent({
       },
       initialView: "dayGridMonth",
       events: [],
-      /* eventContent: function (arg) {
-        return { html: "<div>Dog</div>" };
-      }, */
+      eventTimeFormat: {
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: false,
+        meridiem: false,
+      },
+      slotLabelFormat: {
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: false,
+      },
+      slotMaxTime: "23:59:59",
       dayMaxEvents: true,
       eventClick: handleEventClick,
     });
