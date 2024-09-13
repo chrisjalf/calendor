@@ -104,10 +104,16 @@ export default defineComponent({
         <TheCalendar :calendarOptions="calendarOptions" />
       </div>
       <!-- Placeholder -->
-      <div class="col-lg-4">
+      <div class="col-lg-4 event-form">
         <EventForm @addEvent="addEvent" />
       </div>
     </div>
     <EventModal ref="eventModal" @deleteEvent="deleteEvent" />
   </div>
 </template>
+
+<style scoped>
+.event-form {
+  padding: 3rem 0.5rem;
+}
+</style>

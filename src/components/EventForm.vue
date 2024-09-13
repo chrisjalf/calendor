@@ -135,6 +135,9 @@ export default defineComponent({
 
 <template>
   <div class="mb-3">
+    <h3>Create Event</h3>
+  </div>
+  <div class="mb-3">
     <label class="form-label">Name</label>
     <input
       type="email"
@@ -173,7 +176,9 @@ export default defineComponent({
       {{ eventFormError.dates }}
     </div>
   </div>
-  <button type="submit" class="btn btn-primary" @click="handleAddEvent">
-    Submit
-  </button>
+  <div class="text-end">
+    <button type="submit" class="btn btn-primary" @click="handleAddEvent">
+      Create
+    </button>
+  </div>
 </template>
