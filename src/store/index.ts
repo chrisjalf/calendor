@@ -28,6 +28,16 @@ const store = createStore<State>({
     getEvents(context) {
       context.commit("setEvents", []);
     },
+    addEvent(context, payload: Event) {
+      const updatedEvents = [...context.state.events, payload];
+      context.commit("setEvents", updatedEvents);
+    },
+    deleteEvent(context, payload: string) {
+      const updatedEvents = context.state.events.filter(
+        (event) => event.id !== payload
+      );
+      context.commit("setEvents", updatedEvents);
+    },
   },
 });
 
