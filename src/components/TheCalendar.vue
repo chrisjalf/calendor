@@ -20,7 +20,6 @@ export default defineComponent({
 
 <style scoped>
 .fc {
-  /* the calendar root */
   padding: 3rem 1rem 3rem 1rem;
   margin: 0 auto;
 }
@@ -32,5 +31,12 @@ export default defineComponent({
 
 :deep(.fc-event) {
   cursor: pointer;
+}
+
+@media (max-width: 770px) {
+  .fc :deep(.fc-toolbar.fc-header-toolbar) {
+    flex-direction: column;
+    gap: 30px;
+  }
 }
 </style>
