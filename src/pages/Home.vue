@@ -1,19 +1,12 @@
 <script lang="ts">
-import {
-  defineComponent,
-  onMounted,
-  reactive,
-  ref,
-  shallowRef,
-  watch,
-} from "vue";
+import { defineComponent, onMounted, reactive, ref, watch } from "vue";
 import { useStore } from "vuex";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
-import { CalendarOptions, EventClickArg, EventInput } from "@fullcalendar/core";
+import { CalendarOptions, EventClickArg } from "@fullcalendar/core";
 
-import { State } from "../store/index";
+import { State, EventRequest } from "../store/index";
 
 import TheCalendar from "../components/TheCalendar.vue";
 import EventForm from "../components/EventForm.vue";
@@ -38,18 +31,17 @@ export default defineComponent({
       },
       initialView: "dayGridMonth",
       events: [],
+      eventTimeFormat: {
+        hour12: false,
+        meridiem: false,
+      },
       dayMaxEvents: true,
       eventClick: handleEventClick,
     });
     const eventModal = ref<InstanceType<typeof EventModal>>();
 
-    function todo() {
-      store.dispatch("addEvent", {
-        id: "69",
-        title: "event 3",
-        start: "2024-09-12",
-        description: "Test",
-      });
+    function addEvent(event: EventRequest) {
+      store.dispatch("addEvent", event);
     }
 
     function handleEventClick(clickInfo: EventClickArg) {
@@ -66,6 +58,7 @@ export default defineComponent({
             id: event.id,
             description: event.description,
           },
+          end: event.end,
         }));
       }
     );
@@ -78,13 +71,14 @@ export default defineComponent({
           id: event.id,
           description: event.description,
         },
+        end: event.end,
       }));
     });
 
     return {
       calendarOptions,
       eventModal,
-      todo,
+      addEvent,
     };
   },
 });
@@ -98,7 +92,7 @@ export default defineComponent({
       </div>
       <!-- Placeholder -->
       <div class="col-lg-4">
-        <EventForm @todo="todo" />
+        <EventForm @addEvent="addEvent" />
       </div>
     </div>
     <EventModal ref="eventModal" />

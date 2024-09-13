@@ -57,9 +57,7 @@ export default defineComponent({
       <div className="modal-dialog modal-dialog-centered">
         <div className="modal-content">
           <div className="modal-header">
-            <h1 className="modal-title fs-5" id="exampleModalLabel">
-              View Event
-            </h1>
+            <h1 className="modal-title fs-5" id="exampleModalLabel">Event</h1>
             <button
               type="button"
               className="btn-close"
@@ -68,17 +66,23 @@ export default defineComponent({
             ></button>
           </div>
           <div className="modal-body">
-            <div class="bd-example">
+            <div class="bd-example" v-if="selectedEvent">
               <dl>
-                <dt v-if="selectedEvent?.title">Name</dt>
-                <dd v-if="selectedEvent?.title">{{ selectedEvent.title }}</dd>
+                <dt>Name</dt>
+                <dd>{{ selectedEvent.title }}</dd>
 
-                <dt v-if="selectedEvent?.extendedProps.description">
+                <dt v-if="selectedEvent.extendedProps.description">
                   Description
                 </dt>
-                <dd v-if="selectedEvent?.extendedProps.description">
-                  {{ selectedEvent?.extendedProps.description }}
+                <dd v-if="selectedEvent.extendedProps.description">
+                  {{ selectedEvent.extendedProps.description }}
                 </dd>
+
+                <dt>Start Time</dt>
+                <dd>{{ selectedEvent.start }}</dd>
+
+                <dt v-if="selectedEvent.end">End Time</dt>
+                <dd v-if="selectedEvent.end">{{ selectedEvent.end }}</dd>
               </dl>
             </div>
           </div>

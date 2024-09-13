@@ -1,4 +1,12 @@
 import { createStore } from "vuex";
+import { v4 as uuid } from "uuid";
+
+export interface EventRequest {
+  title: string;
+  description: string;
+  start: string;
+  end?: string;
+}
 
 interface Event {
   id: string;
@@ -40,13 +48,17 @@ const store = createStore<State>({
     },
   },
   actions: {
-    addEvent(context, payload: Event) {
-      const updatedEvents = [...context.state.events, payload];
+    addEvent(context, payload: EventRequest) {
+      const newEvent: Event = {
+        id: uuid(),
+        ...payload,
+      };
+      const updatedEvents = [...context.state.events, newEvent];
       context.commit("setEvents", updatedEvents);
     },
-    deleteEvent(context, payload: string) {
+    deleteEvent(context, id: string) {
       const updatedEvents = context.state.events.filter(
-        (event: Event) => event.id !== payload
+        (event: Event) => event.id !== id
       );
       context.commit("setEvents", updatedEvents);
     },
