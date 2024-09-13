@@ -26,9 +26,3 @@ export default defineComponent({
     </header>
   </div>
 </template>
-
-<style scoped>
-.header {
-    
-}
-</style>

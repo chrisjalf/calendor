@@ -134,51 +134,59 @@ export default defineComponent({
 </script>
 
 <template>
-  <div class="mb-3">
-    <h3>Create Event</h3>
-  </div>
-  <div class="mb-3">
-    <label class="form-label">Name</label>
-    <input
-      type="email"
-      class="form-control"
-      :class="{ 'is-invalid': eventFormError.name }"
-      @focus="validateInput('name')"
-      @input="validateInput('name')"
-      v-model="eventName"
-    />
-    <div className="invalid-feedback" v-if="eventFormError.name">
-      {{ eventFormError.name }}
+  <div class="card">
+    <div class="mb-3">
+      <h3>Create Event</h3>
     </div>
-  </div>
-  <div class="mb-3">
-    <label class="form-label">Description</label>
-    <textarea
-      class="form-control"
-      :class="{ 'is-invalid': eventFormError.description }"
-      @focus="validateInput('description')"
-      @input="validateInput('description')"
-      v-model="eventDescription"
-    ></textarea>
-    <div className="invalid-feedback" v-if="eventFormError.description">
-      {{ eventFormError.description }}
+    <div class="mb-3">
+      <label class="form-label">Name</label>
+      <input
+        type="email"
+        class="form-control"
+        :class="{ 'is-invalid': eventFormError.name }"
+        @focus="validateInput('name')"
+        @input="validateInput('name')"
+        v-model="eventName"
+      />
+      <div className="invalid-feedback" v-if="eventFormError.name">
+        {{ eventFormError.name }}
+      </div>
     </div>
-  </div>
-  <div class="mb-3">
-    <label class="form-label">Date</label>
-    <TheDateRangePicker
-      ref="theDateRangePicker"
-      :class="{ 'is-invalid': eventFormError.dates }"
-      @validateDates="() => validateInput('dates')"
-      @afterSelect="changeEventDates"
-    />
-    <div className="invalid-feedback" v-if="eventFormError.dates">
-      {{ eventFormError.dates }}
+    <div class="mb-3">
+      <label class="form-label">Description</label>
+      <textarea
+        class="form-control"
+        :class="{ 'is-invalid': eventFormError.description }"
+        @focus="validateInput('description')"
+        @input="validateInput('description')"
+        v-model="eventDescription"
+      ></textarea>
+      <div className="invalid-feedback" v-if="eventFormError.description">
+        {{ eventFormError.description }}
+      </div>
     </div>
-  </div>
-  <div class="text-end">
-    <button type="submit" class="btn btn-primary" @click="handleAddEvent">
-      Create
-    </button>
+    <div class="mb-3">
+      <label class="form-label">Date</label>
+      <TheDateRangePicker
+        ref="theDateRangePicker"
+        :class="{ 'is-invalid': eventFormError.dates }"
+        @validateDates="() => validateInput('dates')"
+        @afterSelect="changeEventDates"
+      />
+      <div className="invalid-feedback" v-if="eventFormError.dates">
+        {{ eventFormError.dates }}
+      </div>
+    </div>
+    <div class="text-end">
+      <button type="submit" class="btn btn-primary" @click="handleAddEvent">
+        Create
+      </button>
+    </div>
   </div>
 </template>
+
+<style scoped>
+.card {
+  padding: 1rem;
+}
+</style>
