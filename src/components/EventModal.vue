@@ -3,6 +3,8 @@ import { defineComponent, onMounted, ref } from "vue";
 import { Modal } from "bootstrap";
 import { EventImpl } from "@fullcalendar/core/internal";
 
+import { dateFormatter } from "../utils/index";
+
 import TheActionableModal from "./TheActionableModal.vue";
 
 export default defineComponent({
@@ -46,6 +48,7 @@ export default defineComponent({
       confirmationModal,
       promptDeleteEvent,
       handleDeleteEvent,
+      dateFormatter,
     };
   },
 });
@@ -85,10 +88,12 @@ export default defineComponent({
                 </dd>
 
                 <dt>Start Time</dt>
-                <dd>{{ selectedEvent.start }}</dd>
+                <dd>{{ dateFormatter(selectedEvent.start) }}</dd>
 
                 <dt v-if="selectedEvent.end">End Time</dt>
-                <dd v-if="selectedEvent.end">{{ selectedEvent.end }}</dd>
+                <dd v-if="selectedEvent.end">
+                  {{ dateFormatter(selectedEvent.end) }}
+                </dd>
               </dl>
             </div>
           </div>
@@ -97,7 +102,7 @@ export default defineComponent({
               type="button"
               className="btn btn-danger"
               data-bs-dismiss="modal"
-              @click="handleDeleteEvent"
+              @click="promptDeleteEvent"
             >
               Delete
             </button>
@@ -119,7 +124,7 @@ export default defineComponent({
     :body="'This action cannot be undone. Proceed?'"
     :closeText="'Close'"
     :confirmText="'Confirm'"
-    @confirm="deleteEvent"
+    @confirm="handleDeleteEvent"
   />
 </template>
 

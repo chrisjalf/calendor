@@ -32,8 +32,9 @@ export default defineComponent({
       initialView: "dayGridMonth",
       events: [],
       eventTimeFormat: {
-        hour12: false,
-        meridiem: false,
+        // hour12: false,
+        //meridiem: false,
+        meridiem: "short",
       },
       dayMaxEvents: true,
       eventClick: handleEventClick,
