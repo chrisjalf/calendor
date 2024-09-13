@@ -20,22 +20,13 @@ export interface State {
   events: Event[];
 }
 
+const eventsInStorage: string | null = localStorage.getItem("events") ?? null;
+const parsedEvents: Event[] = eventsInStorage
+  ? JSON.parse(eventsInStorage)
+  : [];
 const store = createStore<State>({
   state: {
-    events: [
-      {
-        id: "1",
-        title: "event 1",
-        description: "It's an event",
-        start: "2024-09-01",
-      },
-      {
-        id: "2",
-        title: "event 2",
-        description: "It's an event",
-        start: "2024-09-02",
-      },
-    ],
+    events: parsedEvents,
   },
   getters: {
     events(state: State) {
@@ -54,12 +45,16 @@ const store = createStore<State>({
         ...payload,
       };
       const updatedEvents = [...context.state.events, newEvent];
+
+      localStorage.setItem("events", JSON.stringify(updatedEvents));
       context.commit("setEvents", updatedEvents);
     },
     deleteEvent(context, id: string) {
       const updatedEvents = context.state.events.filter(
         (event: Event) => event.id !== id
       );
+
+      localStorage.setItem("events", JSON.stringify(updatedEvents));
       context.commit("setEvents", updatedEvents);
     },
   },

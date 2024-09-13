@@ -44,6 +44,10 @@ export default defineComponent({
       store.dispatch("addEvent", event);
     }
 
+    function deleteEvent(id: string) {
+      store.dispatch("deleteEvent", id);
+    }
+
     function handleEventClick(clickInfo: EventClickArg) {
       eventModal.value?.showModal(clickInfo.event);
     }
@@ -79,6 +83,7 @@ export default defineComponent({
       calendarOptions,
       eventModal,
       addEvent,
+      deleteEvent,
     };
   },
 });
@@ -95,6 +100,6 @@ export default defineComponent({
         <EventForm @addEvent="addEvent" />
       </div>
     </div>
-    <EventModal ref="eventModal" />
+    <EventModal ref="eventModal" @deleteEvent="deleteEvent" />
   </div>
 </template>

@@ -12,26 +12,36 @@ export default defineComponent({
   setup(_, { emit }) {
     const eventName = ref("Interview");
     const eventDescription = ref("JS One Sdn Bhd");
-    const eventDates = ref<Date[]>([]);
+    const eventDates = ref<string[]>([]);
 
     function changeEventDates(dates: Date[]) {
-      eventDates.value = dates;
+      const filteredDates = dates.filter((date) => date !== null);
+      let processedDates: string[] = [];
+
+      if (filteredDates.length !== 0) {
+        processedDates.push(dateFormatter(filteredDates[0]));
+
+        if (filteredDates.length > 1)
+          processedDates.push(dateFormatter(filteredDates[1]));
+      }
+
+      eventDates.value = processedDates;
     }
 
     function handleAddEvent() {
-      const filteredDates = eventDates.value.filter((date) => date !== null);
+      const dates = eventDates.value;
 
-      if (filteredDates.length === 0) return;
+      if (dates.length === 0) return;
 
       let event: EventRequest = {
         title: eventName.value,
         description: eventDescription.value,
-        start: dateFormatter(filteredDates[0]),
+        start: dates[0],
         // start: eventDates.value[0],
       };
 
-      if (filteredDates.length > 1) {
-        event.end = dateFormatter(filteredDates[1]);
+      if (dates.length > 1) {
+        event.end = dates[1];
         // event.end = eventDates.value[1];
       }
 

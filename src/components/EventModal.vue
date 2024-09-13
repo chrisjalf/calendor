@@ -7,7 +7,8 @@ import TheActionableModal from "./TheActionableModal.vue";
 
 export default defineComponent({
   components: { TheActionableModal },
-  setup(_, { expose }) {
+  emits: { removeEvent: (_: string) => true },
+  setup(_, { emit, expose }) {
     const eventModal = ref<Element>();
     let eventModalObj: Modal;
     let selectedEvent = ref<EventImpl>();
@@ -23,8 +24,13 @@ export default defineComponent({
       confirmationModal.value?.showModal();
     }
 
-    function deleteEvent() {
+    function handleDeleteEvent() {
       selectedEvent.value?.remove();
+
+      const eventId: string | null =
+        selectedEvent.value?.extendedProps.id ?? null;
+
+      if (eventId) emit("deleteEvent", eventId);
     }
 
     expose({ showModal });
@@ -39,7 +45,7 @@ export default defineComponent({
       eventModal,
       confirmationModal,
       promptDeleteEvent,
-      deleteEvent,
+      handleDeleteEvent,
     };
   },
 });
@@ -91,7 +97,7 @@ export default defineComponent({
               type="button"
               className="btn btn-danger"
               data-bs-dismiss="modal"
-              @click="promptDeleteEvent"
+              @click="handleDeleteEvent"
             >
               Delete
             </button>
