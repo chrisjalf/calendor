@@ -1,40 +1,52 @@
-import { createStore } from "vuex/types/index.d.ts";
+import { createStore } from "vuex";
 
 interface Event {
   id: string;
-  name: string;
+  title: string;
   description: string;
+  start: string;
+  end?: string;
 }
 
-interface State {
+export interface State {
   events: Event[];
 }
 
 const store = createStore<State>({
   state: {
-    events: [],
+    events: [
+      {
+        id: "1",
+        title: "event 1",
+        description: "It's an event",
+        start: "2024-09-01",
+      },
+      {
+        id: "2",
+        title: "event 2",
+        description: "It's an event",
+        start: "2024-09-02",
+      },
+    ],
   },
   getters: {
-    events(state) {
+    events(state: State) {
       return state.events;
     },
   },
   mutations: {
-    setEvents(state, payload) {
+    setEvents(state, payload: Event[]) {
       state.events = [...payload];
     },
   },
   actions: {
-    getEvents(context) {
-      context.commit("setEvents", []);
-    },
     addEvent(context, payload: Event) {
       const updatedEvents = [...context.state.events, payload];
       context.commit("setEvents", updatedEvents);
     },
     deleteEvent(context, payload: string) {
       const updatedEvents = context.state.events.filter(
-        (event) => event.id !== payload
+        (event: Event) => event.id !== payload
       );
       context.commit("setEvents", updatedEvents);
     },

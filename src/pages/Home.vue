@@ -1,9 +1,19 @@
 <script lang="ts">
-import { defineComponent, Reactive, reactive, ref } from "vue";
+import {
+  defineComponent,
+  onMounted,
+  reactive,
+  ref,
+  shallowRef,
+  watch,
+} from "vue";
+import { useStore } from "vuex";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
-import { CalendarOptions, EventClickArg } from "@fullcalendar/core";
+import { CalendarOptions, EventClickArg, EventInput } from "@fullcalendar/core";
+
+import { State } from "../store/index";
 
 import TheCalendar from "../components/TheCalendar.vue";
 import EventForm from "../components/EventForm.vue";
@@ -12,15 +22,8 @@ import EventModal from "../components/EventModal.vue";
 export default defineComponent({
   components: { TheCalendar, EventForm, EventModal },
   setup() {
-    const events = reactive([
-      {
-        title: "event 1",
-        start: "2024-09-01",
-        extendedProps: { description: "Hello" },
-      },
-      { title: "event 2", start: "2024-09-02" },
-    ]);
-    const calendarOptions: Reactive<CalendarOptions> = reactive({
+    const store = useStore<State>();
+    const calendarOptions = reactive<CalendarOptions>({
       plugins: [dayGridPlugin, timeGridPlugin, interactionPlugin],
       headerToolbar: {
         left: "prev today next",
@@ -34,22 +37,43 @@ export default defineComponent({
         day: "Day",
       },
       initialView: "dayGridMonth",
-      events: events,
+      events: [],
       dayMaxEvents: true,
       eventClick: handleEventClick,
     });
     const eventModal = ref<InstanceType<typeof EventModal>>();
 
     function todo() {
-      events.push({
+      store.dispatch("addEvent", {
+        id: "69",
         title: "event 3",
         start: "2024-09-12",
+        description: "Test",
       });
     }
 
     function handleEventClick(clickInfo: EventClickArg) {
       eventModal.value?.showModal(clickInfo.event);
     }
+
+    watch(
+      () => store.state.events,
+      (newVal) => {
+        calendarOptions.events = newVal.map((event) => ({
+          title: event.title,
+          start: event.start,
+          extendedProps: { id: event.id },
+        }));
+      }
+    );
+
+    onMounted(() => {
+      calendarOptions.events = store.state.events.map((event) => ({
+        title: event.title,
+        start: event.start,
+        extendedProps: { id: event.id },
+      }));
+    });
 
     return {
       calendarOptions,
