@@ -31,11 +31,9 @@ export default defineComponent({
       },
       initialView: "dayGridMonth",
       events: [],
-      eventTimeFormat: {
-        // hour12: false,
-        //meridiem: false,
-        meridiem: "short",
-      },
+      /* eventContent: function (arg) {
+        return { html: "<div>Dog</div>" };
+      }, */
       dayMaxEvents: true,
       eventClick: handleEventClick,
     });
@@ -57,10 +55,10 @@ export default defineComponent({
       () => store.state.events,
       (newVal) => {
         calendarOptions.events = newVal.map((event) => ({
+          id: event.id,
           title: event.title,
           start: event.start,
           extendedProps: {
-            id: event.id,
             description: event.description,
           },
           end: event.end,
@@ -70,10 +68,10 @@ export default defineComponent({
 
     onMounted(() => {
       calendarOptions.events = store.state.events.map((event) => ({
+        id: event.id,
         title: event.title,
         start: event.start,
         extendedProps: {
-          id: event.id,
           description: event.description,
         },
         end: event.end,

@@ -29,10 +29,8 @@ export default defineComponent({
     function handleDeleteEvent() {
       selectedEvent.value?.remove();
 
-      const eventId: string | null =
-        selectedEvent.value?.extendedProps.id ?? null;
-
-      if (eventId) emit("deleteEvent", eventId);
+      const eventId = selectedEvent.value?.id;
+      emit("deleteEvent", eventId);
     }
 
     expose({ showModal });
