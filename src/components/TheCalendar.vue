@@ -21,7 +21,7 @@ export default defineComponent({
 <style scoped>
 .fc {
   /* the calendar root */
-  padding: 3rem;
+  padding: 3rem 1rem 3rem 1rem;
   margin: 0 auto;
 }
 

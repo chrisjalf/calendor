@@ -7,7 +7,7 @@ import TheActionableModal from "./TheActionableModal.vue";
 
 export default defineComponent({
   components: { TheActionableModal },
-  emits: { removeEvent: (_: string) => true },
+  emits: { deleteEvent: (_: string) => true },
   setup(_, { emit, expose }) {
     const eventModal = ref<Element>();
     let eventModalObj: Modal;
