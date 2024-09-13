@@ -14,9 +14,21 @@ const store = createStore<State>({
   state: {
     events: [],
   },
-  getters: {},
-  mutations: {},
-  actions: {},
+  getters: {
+    events(state) {
+      return state.events;
+    },
+  },
+  mutations: {
+    setEvents(state, payload) {
+      state.events = [...payload];
+    },
+  },
+  actions: {
+    getEvents(context) {
+      context.commit("setEvents", []);
+    },
+  },
 });
 
 export default store;
